@@ -1,0 +1,7 @@
+# Requirements for BC-ResNet Keyword Spotting
+torch>=1.7.1
+torchaudio>=0.7.2
+numpy>=1.19.0
+tqdm>=4.60.0
+requests>=2.25.0
+soundfile>=0.10.0

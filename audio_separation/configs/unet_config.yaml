@@ -1,0 +1,108 @@
+# U-Net Music Source Separation Configuration
+
+# Model configuration
+model:
+  type: "spleeter"  # "unet" or "spleeter"
+  n_fft: 4096
+  hop_length: 1024
+  n_sources: 4
+  n_channels: 2
+  sample_rate: 44100
+  source_names: ["vocals", "drums", "bass", "other"]
+  
+  # U-Net specific parameters
+  conv_filters: [16, 32, 64, 128, 256, 512]
+
+# Training configuration
+training:
+  batch_size: 8
+  learning_rate: 1.0e-3
+  num_epochs: 100
+  patience: 10  # Early stopping patience
+  gradient_clip_val: 1.0
+  
+  # Optimizer settings
+  optimizer: "adam"
+  weight_decay: 1.0e-4
+  scheduler: "plateau"  # "plateau", "cosine", "step"
+  
+  # Loss function
+  loss_function: "l1"  # "l1", "l2", "mse"
+  
+  # Mixed precision training
+  use_amp: true
+  
+  # Validation
+  val_interval: 1  # Validate every N epochs
+  val_patience: 5  # Patience for validation loss
+
+# Data configuration
+data:
+  musdb_path: "/path/to/musdb18"  # Update this path
+  segment_duration: 6.0  # seconds
+  random_segments: true
+  augment: true
+  
+  # Data loading
+  num_workers: 4
+  pin_memory: true
+  
+  # Train/validation split (if not using MUSDB18 built-in split)
+  train_ratio: 0.8
+
+# Audio processing
+audio:
+  sample_rate: 44100
+  n_fft: 4096
+  hop_length: 1024
+  window: "hann"
+  
+  # Normalization
+  normalize_input: true
+  compute_stats: true  # Compute normalization stats from training data
+
+# Logging and checkpoints
+logging:
+  log_dir: "experiments"
+  experiment_name: "unet_source_separation"
+  log_interval: 10  # Log every N batches
+  
+  # Tensorboard
+  use_tensorboard: true
+  
+  # Checkpoints
+  checkpoint_dir: "checkpoints"
+  save_top_k: 3  # Save top K checkpoints
+  save_last: true
+  monitor: "val_loss"  # Metric to monitor for checkpointing
+  mode: "min"  # "min" or "max"
+
+# Evaluation
+evaluation:
+  use_museval: true  # Use museval for accurate BSS metrics
+  save_separated: false  # Save separated audio files during evaluation
+  
+  # Test-time augmentation
+  tta: false
+  tta_shifts: 4
+
+# Inference
+inference:
+  chunk_duration: 10.0  # seconds
+  overlap: 0.25  # fraction
+  device: "auto"  # "cuda", "cpu", or "auto"
+  
+  # Post-processing
+  apply_window_compensation: true
+  normalize_output: false
+
+# System
+system:
+  seed: 42
+  deterministic: false  # For reproducibility (may reduce performance)
+  
+  # Device settings
+  cuda_benchmark: true  # Enable cudnn benchmark for performance
+  
+  # Memory management
+  max_memory_usage: 0.8  # Fraction of GPU memory to use
