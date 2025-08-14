@@ -198,3 +198,5 @@ desktop.ini
 # Audio processing temporary files
 *.cache
 *.index
+
+.github/

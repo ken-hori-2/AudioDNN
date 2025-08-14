@@ -71,7 +71,7 @@ python train.py --test_only --model_path ./checkpoints/best_model.pth --tau 1.0
 ## 📁 File Structure
 
 ```
-audio_sep/
+keyword_spotting/
 ├── bcresnet.py          # BC-ResNet model implementation
 ├── data_utils.py        # Dataset loading and preprocessing
 ├── train.py             # Training script
